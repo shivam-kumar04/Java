@@ -14,7 +14,6 @@ public class Person {
         this.hobbies = hobbies;
     }
 
-    // Manually build a JSON representation of this object
     public String toJson() {
         StringBuilder sb = new StringBuilder();
         sb.append("{\n");
@@ -36,7 +35,6 @@ public class Person {
 
         String json = person.toJson();
 
-        // Writing the JSON string to a file manually
         try (FileWriter file = new FileWriter("person.json")) {
             file.write(json);
             System.out.println("JSON file created successfully.");
