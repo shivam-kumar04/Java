@@ -1,43 +1,56 @@
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class Person {
     private String name;
     private int age;
     private double amount;
-    private String[] hobbies;
+    private List<String> hobbies;
 
-    public Person(String name, int age, double amount, String[] hobbies) {
+
+    public Person(String name, int age, double amount, List<String> hobbies) {
         this.name = name;
         this.age = age;
         this.amount = amount;
         this.hobbies = hobbies;
     }
+    
+    public String getName() { return name; }
+    public int getAge() { return age; }
+    public List<String> getHobbies() { return hobbies; }
 
-    public String toJson() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("{\n");
-        sb.append("\"name\": \"").append(name).append("\",\n");
-        sb.append("\"age\": ").append(age).append(",\n");
-        sb.append("\"amount\": ").append(amount).append(",\n");
-        sb.append("\"hobbies\": [");
-        for (int i = 0; i < hobbies.length; i++) {
-            sb.append("\"").append(hobbies[i]).append("\"");
-            if (i < hobbies.length - 1) sb.append(", ");
-        }
-        sb.append("]\n}");
-        return sb.toString();
-    }
 
     public static void main(String[] args) {
-        String[] hobbies = {"Reading", "Swimming", "Gaming"};
-        Person person = new Person("Alice", 30, 1500.5, hobbies);
+        List<String> hobbiesList = Arrays.asList("Reading", "Swimming", "Gaming");
+        Person person = new Person("Alice", 30, 1500.5, hobbiesList);
 
-        String json = person.toJson();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String jsonOutput = gson.toJson(person);
 
-        try (FileWriter file = new FileWriter("person.json")) {
-            file.write(json);
-            System.out.println("JSON file created successfully.");
+        try (FileWriter writer = new FileWriter("person.json")) {
+            writer.write(jsonOutput);
+            System.out.println("JSON file created successfully using Gson.");
+            System.out.println("--- Generated JSON ---");
+            System.out.println(jsonOutput);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("\n--- Reading from JSON file ---");
+        try (FileReader reader = new FileReader("person.json")) {
+            // Read the file and convert the JSON back into a Person object
+            Person personFromFile = gson.fromJson(reader, Person.class);
+
+            System.out.println("JSON file read and parsed successfully.");
+            System.out.println("Name: " + personFromFile.getName());
+            System.out.println("Age: " + personFromFile.getAge());
+            System.out.println("Hobbies: " + personFromFile.getHobbies());
         } catch (IOException e) {
             e.printStackTrace();
         }
