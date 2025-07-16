@@ -1,4 +1,3 @@
-// File: Person.java
 import java.util.List;
 
 public class Person {
@@ -6,11 +5,8 @@ public class Person {
     private int age;
     private double amount;
     private List<String> hobbies;
-
-    // A no-argument constructor is good practice for some libraries, though Gson doesn't always need it.
     public Person() {}
 
-    // Constructor to initialize a new Person object
     public Person(String name, int age, double amount, List<String> hobbies) {
         this.name = name;
         this.age = age;
@@ -18,7 +14,6 @@ public class Person {
         this.hobbies = hobbies;
     }
 
-    // Getters to access the private fields
     public String getName() {
         return name;
     }
